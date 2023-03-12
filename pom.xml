@@ -11,6 +11,7 @@
 		
 		<spring-cloud.version>2022.0.1</spring-cloud.version>
 		<spring-boot.version>3.0.4</spring-boot.version>
+		<owasp.version>8.1.2</owasp.version>
 
 		<java.version>17</java.version>
 		<maven.compiler.source>17</maven.compiler.source>
@@ -61,7 +62,7 @@
 			<plugin>
 				<groupId>org.owasp</groupId>
 				<artifactId>dependency-check-maven</artifactId>
-				<version>1.4.0</version>
+				<version>${owasp.version}</version>
 				<configuration>
 					<format>${dependency-check-format}</format>
 					<failBuildOnCVSS>${dependency-check-failscore}</failBuildOnCVSS>
