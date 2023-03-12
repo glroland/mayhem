@@ -20,25 +20,33 @@ public class StartupBean
     private String directive;
     private static final String DIRECTIVE_COMPUTE = "compute";
     private static final String DIRECTIVE_MEMORY = "memory";
+    private static final String DIRECTIVE_ALL = "all";
 
     @EventListener
     public void onApplicationEvent(ContextRefreshedEvent event) 
     {
-        Runnable load;
-        if (DIRECTIVE_COMPUTE.equalsIgnoreCase(directive))
+        Runnable load = null;
+
+        if (DIRECTIVE_ALL.equalsIgnoreCase(directive) || DIRECTIVE_COMPUTE.equalsIgnoreCase(directive))
         {
             System.out.println("Compute");
             ComputeLoadConfig config = ConfigManager.getInstance().getComputeLoadConfig();
             load = new ComputeLoadRunnable(config);
+            spawn(load);
         }
-        else
+        
+        if (DIRECTIVE_ALL.equalsIgnoreCase(directive) || DIRECTIVE_MEMORY.equalsIgnoreCase(directive))
         {
             System.out.println("Memory");
             MemoryLoadConfig config = ConfigManager.getInstance().getMemoryLoadConfig();
             load = new MemoryLoadRunnable(config);
+            spawn(load);
         }
 
-        spawn(load);
+        if (load == null)
+        {
+            throw new RuntimeException("No directive passed to startup module");
+        }
     }
 
     private Thread spawn(Runnable r)
