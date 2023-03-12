@@ -10,13 +10,13 @@ public class MemoryLoadRunnable implements Runnable
     private long delayBetweenJumps;
     private int jumpSize;
 
-    public MemoryLoadRunnable(int floor, long ceiling, long delayToStart, long delayBetweenJumps, int jumpSize) 
+    public MemoryLoadRunnable(MemoryLoadConfig config) 
     {
-        this.floor = floor;
-        this.ceiling = ceiling;
-        this.delayToStart = delayToStart;
-        this.delayBetweenJumps = delayBetweenJumps;
-        this.jumpSize = jumpSize;
+        this.floor = config.getFloor();
+        this.ceiling = config.getCeiling();
+        this.delayToStart = config.getDelayToStart();
+        this.delayBetweenJumps = config.getDelayBetweenJumps();
+        this.jumpSize = config.getJumpSize();
     }
 
     public void run()

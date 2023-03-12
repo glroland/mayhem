@@ -7,12 +7,12 @@ public class ComputeLoadRunnable implements Runnable
     private long delayToStart;
     private long delayBetweenJumps;
 
-    public ComputeLoadRunnable(int floor, int ceiling, long delayToStart, long delayBetweenJumps)
+    public ComputeLoadRunnable(ComputeLoadConfig config)
     {
-        this.floor = floor;
-        this.ceiling = ceiling;
-        this.delayToStart = delayToStart;
-        this.delayBetweenJumps = delayBetweenJumps;
+        this.floor = config.getFloor();
+        this.ceiling = config.getCeiling();
+        this.delayToStart = config.getDelayToStart();
+        this.delayBetweenJumps = config.getDelayBetweenJumps();
     }
     
     public void run()
