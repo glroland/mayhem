@@ -1,9 +1,13 @@
 package com.glroland.mayhem.worker;
 
 import java.util.LinkedList;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class MemoryLoadRunnable implements Runnable
 {
+	private static final Log log = LogFactory.getLog(MemoryLoadRunnable.class);
+
     private int floor;
     private long ceiling;
     private long delayToStart;
@@ -12,33 +16,42 @@ public class MemoryLoadRunnable implements Runnable
 
     public MemoryLoadRunnable(MemoryLoadConfig config) 
     {
-        this.floor = config.getFloor();
-        this.ceiling = config.getCeiling();
+        this.floor = config.getFloorMegabytes();
+        this.ceiling = config.getCeilingMegabytes();
         this.delayToStart = config.getDelayToStart();
         this.delayBetweenJumps = config.getDelayBetweenJumps();
-        this.jumpSize = config.getJumpSize();
+        this.jumpSize = config.getJumpSizeMegabytes();
     }
 
     public void run()
     {
-        // initialize load
-        LinkedList<byte[]> load = new LinkedList<byte[]>();
-        long currentSize = 0;
-        load.add(createChunk(floor));
-        currentSize += floor;
+        log.info("Launching Memory Load Thread....  ID=" + Thread.currentThread().getId() + " Size=" + floor + "-" + ceiling + "+" + jumpSize + " StartDelay=" + delayToStart + " JumpDelay=" + delayBetweenJumps);
 
-        // pause work until provided inital delay has passed
-        sleep(delayToStart);
-
-        while(true)
+        try
         {
-            if(currentSize < ceiling)
-            {
-                load.add(createChunk(jumpSize));
-                currentSize += jumpSize;
-            }
+            // initialize load
+            LinkedList<byte[]> load = new LinkedList<byte[]>();
+            long currentSize = 0;
+            load.add(createChunk(floor));
+            currentSize += floor;
 
-            sleep(delayBetweenJumps);
+            // pause work until provided inital delay has passed
+            sleep(delayToStart);
+
+            while(true)
+            {
+                if(currentSize < ceiling)
+                {
+                    load.add(createChunk(jumpSize));
+                    currentSize += jumpSize;
+                }
+
+                sleep(delayBetweenJumps);
+            }
+        }
+        finally
+        {
+            log.info("Memory Load Thread Naturally Terminating.  ID=" + Thread.currentThread().getId());
         }
     }
 
@@ -54,13 +67,16 @@ public class MemoryLoadRunnable implements Runnable
 
     private void sleep(long delay)
     {
-        try
+        if (delay > 0)
         {
-            Thread.sleep(delay);
-        }
-        catch (InterruptedException e)
-        {
-            throw new RuntimeException("Load generation interrupted while awaiting next bump.", e);
+            try
+            {
+                Thread.sleep(delay);
+            }
+            catch (InterruptedException e)
+            {
+                throw new RuntimeException("Load generation interrupted while awaiting next bump.", e);
+            }
         }
     }
 }

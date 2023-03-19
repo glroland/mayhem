@@ -1,47 +1,79 @@
 package com.glroland.mayhem.worker;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-import org.springframework.beans.factory.annotation.Value;
+import jakarta.validation.constraints.Min;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
-@Component
-@Scope("singleton")
+@Configuration
+@ConfigurationProperties(prefix = "mayhem.memory")
 public class MemoryLoadConfig 
 {
-    @Value("${mayhem.memory.floor}")
+    @Min(1)
     private int floor;
 
-    @Value("${mayhem.memory.ceiling}")
+    @Min(1)
     private long ceiling;
 
-    @Value("${mayhem.delayToStart}")
+    @Min(0)
     private long delayToStart;
 
-    @Value("${mayhem.delayBetweenJumps}")
+    @Min(0)
     private long delayBetweenJumps;
-
-    @Value("${mayhem.jumpSize}")
+    
+    @Min(0)
     private int jumpSize;
 
     private static final int MEGABYTE = 1024 * 1024;
 
-    public int getFloor() {
+    public int getFloorMegabytes() {
         return floor * MEGABYTE;
     }
 
-    public long getCeiling() {
+    public long getCeilingMegabytes() {
         return ceiling * MEGABYTE;
+    }
+
+    public int getJumpSizeMegabytes() {
+        return jumpSize * MEGABYTE;
+    }
+
+    public int getFloor() {
+        return floor;
+    }
+
+    public void setFloor(int floor) {
+        this.floor = floor;
+    }
+
+    public long getCeiling() {
+        return ceiling;
+    }
+
+    public void setCeiling(long ceiling) {
+        this.ceiling = ceiling;
     }
 
     public long getDelayToStart() {
         return delayToStart;
     }
 
+    public void setDelayToStart(long delayToStart) {
+        this.delayToStart = delayToStart;
+    }
+
     public long getDelayBetweenJumps() {
         return delayBetweenJumps;
     }
 
+    public void setDelayBetweenJumps(long delayBetweenJumps) {
+        this.delayBetweenJumps = delayBetweenJumps;
+    }
+
     public int getJumpSize() {
-        return jumpSize * MEGABYTE;
+        return jumpSize;
+    }
+
+    public void setJumpSize(int jumpSize) {
+        this.jumpSize = jumpSize;
     }
 }

@@ -1,20 +1,30 @@
 package com.glroland.mayhem.worker;
 
-public class ConsumeVCPURunnable implements Runnable {
-    
-    public ConsumeVCPURunnable()
-    {
-    }
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+public class ConsumeVCPURunnable implements Runnable 
+{
+	private static final Log log = LogFactory.getLog(ConsumeVCPURunnable.class);
+    
     public void run()
     {
-        double reallyRandom = 0;
-        while (true)
+        log.info("VCPU Thread Starting....  ID=" + Thread.currentThread().getId());
+
+        try
         {
-            reallyRandom = Math.random() * Math.random();
-            if (reallyRandom > 0)
+            double reallyRandom = 0;
+            while (true)
             {
+                reallyRandom = Math.random() * Math.random();
+                if (reallyRandom > 0)
+                {
+                }
             }
+        }
+        finally
+        {
+            log.info("VCPU Thread Ending.  ID=" + Thread.currentThread().getId());
         }
     }
 }
