@@ -12,7 +12,7 @@
 	<artifactId>mayhem-worker</artifactId>
 	<version>1.0</version>
 	<name>Mayhem Worker</name>
-	<description>Demo project for Spring Boot</description>
+	<description></description>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
