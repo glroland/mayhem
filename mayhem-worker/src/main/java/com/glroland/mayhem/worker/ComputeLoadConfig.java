@@ -1,15 +1,24 @@
 package com.glroland.mayhem.worker;
 
-public class ComputeLoadConfig 
-{    
-    private int floor = 1;
-    private int ceiling = 6;
-    private long delayToStart = 60 * 1000;
-    private long delayBetweenJumps = 60 * 1000;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
 
-    public ComputeLoadConfig()
-    {
-    }
+@Component
+@Scope("singleton")
+public class ComputeLoadConfig 
+{
+    @Value("${mayhem.compute.floor}")
+    private int floor;
+
+    @Value("${mayhem.compute.ceiling}")
+    private int ceiling;
+
+    @Value("${mayhem.compute.delayToStart}")
+    private long delayToStart;
+
+    @Value("${mayhem.compute.delayBetweenJumps}")
+    private long delayBetweenJumps;
 
     public int getFloor() {
         return floor;

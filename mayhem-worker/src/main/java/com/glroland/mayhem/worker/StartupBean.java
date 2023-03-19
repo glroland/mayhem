@@ -16,6 +16,12 @@ public class StartupBean
     @Autowired
     private Environment environment;
 
+    @Autowired
+    private ComputeLoadConfig computeLoadConfig;
+
+    @Autowired
+    private MemoryLoadConfig memoryLoadConfig;
+
     @Value("${DIRECTIVE}")
     private String directive;
     private static final String DIRECTIVE_COMPUTE = "compute";
@@ -30,16 +36,14 @@ public class StartupBean
         if (DIRECTIVE_ALL.equalsIgnoreCase(directive) || DIRECTIVE_COMPUTE.equalsIgnoreCase(directive))
         {
             System.out.println("Compute");
-            ComputeLoadConfig config = ConfigManager.getInstance().getComputeLoadConfig();
-            load = new ComputeLoadRunnable(config);
+            load = new ComputeLoadRunnable(computeLoadConfig);
             spawn(load);
         }
         
         if (DIRECTIVE_ALL.equalsIgnoreCase(directive) || DIRECTIVE_MEMORY.equalsIgnoreCase(directive))
         {
             System.out.println("Memory");
-            MemoryLoadConfig config = ConfigManager.getInstance().getMemoryLoadConfig();
-            load = new MemoryLoadRunnable(config);
+            load = new MemoryLoadRunnable(memoryLoadConfig);
             spawn(load);
         }
 

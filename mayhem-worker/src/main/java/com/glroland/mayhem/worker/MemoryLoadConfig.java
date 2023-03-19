@@ -1,23 +1,36 @@
 package com.glroland.mayhem.worker;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
+
+@Component
+@Scope("singleton")
 public class MemoryLoadConfig 
 {
-    private int floor = 256 * 1024 * 1024;
-    private long ceiling = 16 * 1024 * 1024 * 1024;
-    private long delayToStart = 60 * 1000;
-    private long delayBetweenJumps = 15 * 1000;
-    private int jumpSize = 50 * 1024 * 1024;
+    @Value("${mayhem.memory.floor}")
+    private int floor;
 
-    public MemoryLoadConfig()
-    {
-    }
+    @Value("${mayhem.memory.ceiling}")
+    private long ceiling;
+
+    @Value("${mayhem.delayToStart}")
+    private long delayToStart;
+
+    @Value("${mayhem.delayBetweenJumps}")
+    private long delayBetweenJumps;
+
+    @Value("${mayhem.jumpSize}")
+    private int jumpSize;
+
+    private static final int MEGABYTE = 1024 * 1024;
 
     public int getFloor() {
-        return floor;
+        return floor * MEGABYTE;
     }
 
     public long getCeiling() {
-        return ceiling;
+        return ceiling * MEGABYTE;
     }
 
     public long getDelayToStart() {
@@ -29,6 +42,6 @@ public class MemoryLoadConfig
     }
 
     public int getJumpSize() {
-        return jumpSize;
+        return jumpSize * MEGABYTE;
     }
 }
