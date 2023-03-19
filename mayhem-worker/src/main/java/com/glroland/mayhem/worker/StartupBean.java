@@ -16,7 +16,7 @@ public class StartupBean
     @Autowired
     private Environment environment;
 
-    @Value("${DIRECTIVE}")
+    @Value("DIRECTIVE")
     private String directive;
     private static final String DIRECTIVE_COMPUTE = "compute";
     private static final String DIRECTIVE_MEMORY = "memory";
