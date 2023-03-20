@@ -1,0 +1,46 @@
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: mayhem-worker
+  labels:
+    app: mayhem-worker
+    app.kubernetes.io/component: mayhem-worker
+    app.kubernetes.io/instance: mayhem-worker
+    app.kubernetes.io/name: mayhem-worker
+    app.kubernetes.io/part-of: mayhem
+    app.openshift.io/runtime: java
+    app.openshift.io/runtime-version: openjdk-17-ubi8
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'mayhem-worker:latest'
+  resources: {}
+  successfulBuildsHistoryLimit: 3
+  failedBuildsHistoryLimit: 1
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        namespace: openshift
+        name: 'java:openjdk-17-ubi8'
+  postCommit: {}
+  source:
+    type: Git
+    git:
+      uri: 'https://github.com/glroland/mayhem.git'
+    contextDir: /mayhem-worker
+  triggers:
+    - type: Generic
+      generic:
+        secretReference:
+          name: mayhem-worker-generic-webhook-secret
+    - type: GitHub
+      github:
+        secretReference:
+          name: mayhem-worker-github-webhook-secret
+    - type: ImageChange
+      imageChange: {}
+    - type: ConfigChange
+  runPolicy: Serial

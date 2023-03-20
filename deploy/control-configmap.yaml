@@ -1,0 +1,16 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: mayhem-control-config
+immutable: false
+data:
+  application.properties: |
+    spring.application.name=mayhem-control
+    server.port=8080
+
+    spring.cloud.config.server.git.uri=https://github.com/glroland/mayhem
+    spring.cloud.config.server.git.search-paths=config-repo
+    spring.cloud.config.server.git.clone-on-start=true
+    spring.cloud.config.server.prefix=config
+
+    #logging.level.org.springframework=debug

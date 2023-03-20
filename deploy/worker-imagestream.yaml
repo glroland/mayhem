@@ -1,0 +1,15 @@
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  name: mayhem-worker
+  labels:
+    app: mayhem-worker
+    app.kubernetes.io/component: mayhem-worker
+    app.kubernetes.io/instance: mayhem-worker
+    app.kubernetes.io/name: mayhem-worker
+    app.kubernetes.io/part-of: mayhem
+    app.openshift.io/runtime: java
+    app.openshift.io/runtime-version: openjdk-17-ubi8
+spec:
+  lookupPolicy:
+    local: false

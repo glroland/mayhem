@@ -1,0 +1,65 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  annotations:
+    alpha.image.policy.openshift.io/resolve-names: '*'
+    app.openshift.io/route-disabled: 'false'
+    image.openshift.io/triggers: >-
+      [{"from":{"kind":"ImageStreamTag","name":"mayhem-control:latest","namespace":"mayhem"},"fieldPath":"spec.template.spec.containers[?(@.name==\"mayhem-control\")].image","pause":"false"}]
+  name: mayhem-control
+  labels:
+    app: mayhem-control
+    app.kubernetes.io/component: mayhem-control
+    app.kubernetes.io/instance: mayhem-control
+    app.kubernetes.io/name: mayhem-control
+    app.kubernetes.io/part-of: mayhem
+    app.openshift.io/runtime: java
+    app.openshift.io/runtime-version: openjdk-17-ubi8
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mayhem-control
+  template:
+    metadata:
+      labels:
+        app: mayhem-control
+        deployment: mayhem-control
+    spec:
+      volumes:
+        - name: application-properties
+          configMap:
+            name: mayhem-control-config
+            items:
+              - key: application.properties
+                path: application.properties
+            defaultMode: 511
+      containers:
+        - name: mayhem-control
+          image: >-
+            image-registry.openshift-image-registry.svc:5000/mayhem/mayhem-control@sha256:3a61db9fbb9929448aca20d6179b7bd61452423c6c0baf17112eb6614cec6d59
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 8443
+              protocol: TCP
+          resources: {}
+          volumeMounts:
+            - name: application-properties
+              readOnly: true
+              mountPath: /deployments/config
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600

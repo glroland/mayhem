@@ -1,0 +1,27 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: mayhem-worker
+  labels:
+    app: mayhem-worker
+    app.kubernetes.io/component: mayhem-worker
+    app.kubernetes.io/instance: mayhem-worker
+    app.kubernetes.io/name: mayhem-worker
+    app.kubernetes.io/part-of: mayhem
+    app.openshift.io/runtime: java
+    app.openshift.io/runtime-version: openjdk-17-ubi8
+spec:
+  ipFamilies:
+    - IPv4
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  internalTrafficPolicy: Cluster
+  type: ClusterIP
+  ipFamilyPolicy: SingleStack
+  sessionAffinity: None
+  selector:
+    app: mayhem-worker
+    deployment: mayhem-worker

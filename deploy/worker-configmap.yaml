@@ -1,0 +1,17 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: mayhem-worker-config
+immutable: false
+data:
+  application.properties: >-
+    spring.application.name=mayhem server.port=8080
+
+    spring.profiles.active=dev
+    spring.config.import=configserver:http://mayhem-control.mayhem.svc.cluster.local:8080/config/
+
+    management.endpoints.web.exposure.include = refresh
+
+    DIRECTIVE=all
+
+    logging.level.org.springframework=debug
