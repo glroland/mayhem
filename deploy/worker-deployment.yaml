@@ -37,6 +37,9 @@ spec:
       containers:
         - name: mayhem-worker
           image: mayhem-worker:latest
+          env:
+            - name: DIRECTIVE
+              value: all
           ports:
             - containerPort: 8080
               protocol: TCP
