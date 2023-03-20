@@ -36,8 +36,7 @@ spec:
             defaultMode: 511
       containers:
         - name: mayhem-control
-          image: >-
-            image-registry.openshift-image-registry.svc:5000/mayhem/mayhem-control@sha256:3a61db9fbb9929448aca20d6179b7bd61452423c6c0baf17112eb6614cec6d59
+          image: mayhem-control:latest
           ports:
             - containerPort: 8080
               protocol: TCP

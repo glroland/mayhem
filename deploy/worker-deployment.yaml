@@ -36,8 +36,7 @@ spec:
             defaultMode: 511
       containers:
         - name: mayhem-worker
-          image: >-
-            image-registry.openshift-image-registry.svc:5000/mayhem/mayhem-worker@sha256:db04a1f3467c40057984eca052eeffb05739f4e6a67efa274a0308cde2bc6c5e
+          image: mayhem-worker:latest
           ports:
             - containerPort: 8080
               protocol: TCP
